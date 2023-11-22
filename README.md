@@ -5,7 +5,7 @@ A combined Helm Chart to monitor GNUU server.
 install with
 
 ```bash
-helm -n monitoring upgrade -i monitoring --set grafana.adminPassword=xxxxx --s--set grafana.grafana.ini.auth.github.client_id=xxxx --xet grafana.grafana.ini.auth.github.client_secret=xxxxx ...
+helm -n monitoring upgrade -i monitoring --set grafana.adminPassword=xxxxx --set grafana.grafana.ini.auth.github.client_id=xxxx --xet grafana.grafana.ini.auth.github.client_secret=xxxxx ...
 ```
 
 or provide the credentials in extra secret.yaml
@@ -79,8 +79,11 @@ Loki promtail will collect container logs and push to Loki stack. This is includ
 |-----------|------|---------|-------------|
 | `grafana."grafana.ini"."auth.anonymous".enabled` | bool | `false` |  |
 | `grafana."grafana.ini"."auth.anonymous".org_role` | string | `"Viewer"` |  |
+| `grafana."grafana.ini"."auth.github".enabled` | bool | `true` |  |
+| `grafana."grafana.ini"."auth.github".role_attribute_path` | string | `"contains(groups[*], '@gnuu-de/operator') &&  'GrafanaAdmin' || 'Viewer'"` |  |
 | `grafana."grafana.ini".analytics.check_for_updates` | bool | `false` |  |
 | `grafana."grafana.ini".auth.disable_login_form` | bool | `false` |  |
+| `grafana."grafana.ini".server.root_url` | string | `"https://monitoring.gnuu.de"` |  |
 | `grafana."grafana.ini".users.auto_assign_org_role` | string | `"Viewer"` |  |
 | `grafana.dashboardProviders."dashboardproviders.yaml".apiVersion` | int | `1` |  |
 | `grafana.dashboardProviders."dashboardproviders.yaml".providers[0].disableDeletion` | bool | `false` |  |
@@ -101,7 +104,7 @@ Loki promtail will collect container logs and push to Loki stack. This is includ
 | `grafana.datasources."datasources.yaml".datasources[1].isDefault` | bool | `false` |  |
 | `grafana.datasources."datasources.yaml".datasources[1].name` | string | `"Loki"` |  |
 | `grafana.datasources."datasources.yaml".datasources[1].type` | string | `"loki"` |  |
-| `grafana.datasources."datasources.yaml".datasources[1].url` | string | `"http://monitoring-loki"` |  |
+| `grafana.datasources."datasources.yaml".datasources[1].url` | string | `"http://monitoring-loki:3100"` |  |
 | `grafana.image.registry` | string | `"mtr.devops.telekom.de"` |  |
 | `grafana.image.repository` | string | `"kubeprometheusstack/grafana"` |  |
 | `grafana.ingress.annotations."cert-manager.io/cluster-issuer"` | string | `"letsencrypt"` |  |
@@ -121,8 +124,5 @@ Loki promtail will collect container logs and push to Loki stack. This is includ
 
 ### Credits
 
-Frank Kloeker f.kloeker@telekom.de
-
-Life is for sharing. If you have an issue with the code or want to improve it, feel free to open an issue or an pull
-request.
+Frank Kloeker eumel@admin.gnuu.de
 
