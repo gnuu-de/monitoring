@@ -1,0 +1,98 @@
+# Monitoring
+
+A Minimal Helm Chart to visualize current energy generation in Germany and the corresponding carbon footprint if you use engery NOW.
+
+## Components
+
+### Kepler
+
+
+A Python Flask app origin described in [CaaS Carbon Footprint](https://github.com/caas-team/caas-carbon-footprint) which fetch data from [https://transparency.entsoe.eu/](https://transparency.entsoe.eu/).
+No ServiceMonitor installed here.
+
+### Prometheus
+
+A plain prometheus-server without any CRD requirements, scrape only data from the Entsoe Collector.
+
+### Grafana
+
+Grafana installed from the origin Helm Chart. Includes the Carbon Footprint Dashboard. Beware of the non static datasource address. This must be the prometheus service endpoint. Look for `SETME: service address prometheus server`
+
+Additionally an Ingress can configured to expose Grafana.
+
+```yaml
+grafana:
+  ingress:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+      kubernetes.io/ingress.class: traefik
+      traefik.backend.loadbalancer.sticky: "true"
+      traefik.frontend.passHostHeader: "true"
+      traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+      traefik.ingress.kubernetes.io/redirect-entry-point: https
+    enabled: true
+    hosts:
+      - carbon.example.com
+    tls:
+      - secretName: carbon-example-com
+        hosts:
+          - carbon.example.com
+```
+
+Note: Anonymous access will be allowed per default
+
+### Mobile access
+
+For Android install [Grafana View](https://play.google.com/store/apps/details?id=it.ksol.grafanaview), add a new profile by a given name and the Ingress address to check the carbon emmission quickly.
+
+<img src="grafanamobil.png" alt="grafanamobil" width="240" height="520"/>
+
+### Config parameters:
+
+#### kepler
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+{{- range .Values }}
+  {{- if (contains "kepler" .Key) }}
+| `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
+  {{- end }}
+{{- end }}
+
+#### prometheus
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+{{- range .Values }}
+  {{- if (contains "prometheus" .Key) }}
+| `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
+  {{- end }}
+{{- end }}
+
+#### loki-stack
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+{{- range .Values }}
+  {{- if (contains "loki-stack" .Key) }}
+| `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
+  {{- end }}
+{{- end }}
+
+#### grafana
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+{{- range .Values }}
+  {{- if (contains "grafana" .Key) }}
+| `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
+  {{- end }}
+{{- end }}
+
+### Credits
+
+Frank Kloeker f.kloeker@telekom.de
+
+Life is for sharing. If you have an issue with the code or want to improve it, feel free to open an issue or an pull
+request.
+

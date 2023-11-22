@@ -1,0 +1,149 @@
+# sub chart config
+kepler:
+  # dashboard setting remark: https://www.eia.gov/tools/faqs/faq.php?id=74&t=11
+  global:
+    namespace: monitoring
+  serviceMonitor:
+    enabled: false
+  image:
+    repository: mtr.devops.telekom.de/caas/kepler
+    pullPolicy: Always
+    tag: release-0.6.1
+  resources:
+    limits:
+      cpu: 800m
+      memory: 1024Mi
+    requests:
+      cpu: 200m
+      memory: 128Mi
+# https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
+grafana:
+  #adminPassword: prom-operator
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+      - name: Prometheus
+        type: prometheus
+        # SETME: service address of prometheus server
+        url: http://monitoring-prometheus-server
+        access: proxy
+        isDefault: true
+      - name: Loki
+        type: loki
+        # SETME: service address of prometheus server
+        url: http://monitoring-loki:3100
+        access: proxy
+        isDefault: false
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: 'default'
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+  dashboardsConfigMaps:
+    default: monitoring-dashboards
+  image:
+    registry: mtr.devops.telekom.de
+    repository: kubeprometheusstack/grafana
+  ingress:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+      kubernetes.io/ingress.class: traefik
+      traefik.backend.loadbalancer.sticky: "true"
+      traefik.frontend.passHostHeader: "true"
+      traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+      traefik.ingress.kubernetes.io/redirect-entry-point: https
+    enabled: true
+    hosts:
+      - monitoring.gnuu.de
+    tls:
+      - secretName: monitoring-gnuu-de
+        hosts:
+          - monitoring.gnuu.de
+  persistence:
+    inMemory:
+      enabled: true
+  testFramework:
+    enabled: false
+  rbac:
+    namespaced: true
+  initChownData:
+    enabled: false
+  grafana.ini:
+    analytics:
+      check_for_updates: false
+    users:
+      auto_assign_org_role: Viewer
+    server:
+      root_url: https://monitoring.gnuu.de
+    auth:
+      disable_login_form: false
+    auth.anonymous:
+      enabled: false
+      org_role: Viewer
+    auth.github:
+      #client_id:
+      #client_secret:
+      enabled: true
+      role_attribute_path: contains(groups[*], '@gnuu-de/operator') &&  'GrafanaAdmin' || 'Viewer'
+
+# https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus/values.yaml
+prometheus:
+  alertmanager:
+    enabled: false
+  configmapReload:
+    prometheus:
+      image:
+        repository: mtr.devops.telekom.de/kubeprometheusstack/prometheus-config-reloader
+        tag: v0.67.0
+  image:
+    repository: mtr.devops.telekom.de/kubeprometheusstack/prometheus
+  kube-state-metrics:
+    enabled: true
+  prometheus-node-exporter:
+    enabled: true
+  prometheus-pushgateway:
+    enabled: false
+  releaseNamespace: false
+  extraConfigmapMounts:
+    - name: monitoring-scrapings
+      mountPath: /etc/config
+      subPath: ""
+      configMap: monitoring-scrapings
+      readOnly: true
+  extraScrapeConfigs: |-
+    - job_name: kepler
+      static_configs:
+      - targets: ["kepler:9102"]
+      metric_relabel_configs:
+      - action: replace
+        regex: (.*)
+        source_labels:
+        - container_namespace
+        target_label: namespace
+      relabel_configs:
+      - action: replace
+        regex: (.*)
+        replacement: $1
+        source_labels:
+        - __meta_kubernetes_pod_node_name
+        target_label: instance
+      scrape_interval: 1m
+      scrape_timeout: 30s
+loki-stack:
+  test_pod:
+    enabled: false
+  promtail:
+    enabled: true
+    config:
+      logLevel: info
+      serverPort: 3101
+      clients:
+        - url: http://monitoring-loki:3100/loki/api/v1/push
