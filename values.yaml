@@ -92,7 +92,7 @@ grafana:
       #client_id:
       #client_secret:
       enabled: true
-      role_attribute_path: contains(groups[*], '@gnuu-de/operator') &&  'GrafanaAdmin' || 'Viewer'
+      role_attribute_path: contains(groups[*], '@gnuu-de/operator') &&  'GrafanaAdmin'
 
 # https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus/values.yaml
 prometheus:
