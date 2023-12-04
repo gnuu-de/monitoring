@@ -1,7 +1,7 @@
 apiVersion: v2
 name: gnuu-monitoring
 description: A Helm chart for K3s monitoring with Prometheus and Grafana
-version: "0.0.2"
+version: "0.0.3"
 appVersion: "0.0.2"
 keywords:
   - monitoring
