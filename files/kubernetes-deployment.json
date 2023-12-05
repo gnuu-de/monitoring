@@ -3,10 +3,7 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": {
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
+        "datasource": "-- Grafana --",
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -43,10 +40,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
+      "datasource": "$prometheus",
       "editable": true,
       "error": false,
       "fill": 1,
@@ -94,10 +88,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": "$prometheus",
           "expr": "sum (container_memory_usage_bytes{pod=~\"$pod\", container=~\"$container\", container!=\"POD\", container!=\"\"})",
           "format": "time_series",
           "interval": "10s",
@@ -108,10 +99,7 @@
           "step": 15
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": "$prometheus",
           "expr": "sum (kube_pod_container_resource_requests_memory_bytes{pod=~\"$pod\", container=~\"$container\"})",
           "format": "time_series",
           "hide": false,
@@ -123,10 +111,7 @@
           "step": 20
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": "$prometheus",
           "expr": "sum (kube_pod_container_resource_limits_memory_bytes{pod=~\"$pod\", container=~\"$container\"})",
           "format": "time_series",
           "hide": false,
@@ -175,10 +160,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
+      "datasource": "$prometheus",
       "editable": true,
       "error": false,
       "fill": 1,
@@ -226,10 +208,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": "$prometheus",
           "expr": "sum (rate(container_cpu_usage_seconds_total{image!=\"\",container!=\"POD\",pod=~\"$pod\", container=~\"$container\"}[5m]))",
           "format": "time_series",
           "intervalFactor": 2,
@@ -238,10 +217,7 @@
           "step": 30
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": "$prometheus",
           "expr": "sum(kube_pod_container_resource_requests_cpu_cores{pod=~\"$pod\", container=~\"$container\"})",
           "format": "time_series",
           "interval": "10s",
@@ -252,10 +228,7 @@
           "step": 20
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": "$prometheus",
           "expr": "sum(kube_pod_container_resource_limits_cpu_cores{pod=~\"$pod\", container=~\"$container\"})",
           "format": "time_series",
           "interval": "10s",
@@ -303,10 +276,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
+      "datasource": "$prometheus",
       "editable": true,
       "error": false,
       "fill": 1,
@@ -354,10 +324,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": "$prometheus",
           "expr": "sum (rate(container_network_receive_bytes_total{pod=~\"$pod\"}[5m]))",
           "format": "time_series",
           "intervalFactor": 2,
@@ -414,10 +381,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
+        "datasource": "$prometheus",
         "definition": "",
         "hide": 0,
         "includeAll": true,
@@ -442,10 +406,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
+        "datasource": "$prometheus",
         "definition": "",
         "hide": 0,
         "includeAll": true,
@@ -469,10 +430,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
+        "datasource": "$prometheus",
         "definition": "",
         "hide": 0,
         "includeAll": true,
@@ -497,10 +455,7 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
+        "datasource": "$prometheus",
         "definition": "",
         "hide": 0,
         "includeAll": true,
@@ -517,6 +472,22 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "current": {
+          "text": "Prometheus",
+          "value": "Prometheus"
+        },
+        "hide": 0,
+        "label": "Data Source",
+        "name": "prometheus",
+        "options": [
+
+        ],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
       }
     ]
   },
