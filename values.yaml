@@ -1,5 +1,20 @@
 # sub chart config
 kepler:
+  extraEnvVars:
+    KEPLER_LOG_LEVEL: "1"
+    # METRIC_PATH: "/metrics"
+    # BIND_ADDRESS: "0.0.0.0:9102"
+    ENABLE_GPU: "false"
+    ENABLE_QAT: "false"
+    ENABLE_EBPF_CGROUPID: "true"
+    EXPOSE_HW_COUNTER_METRICS: "true"
+    EXPOSE_IRQ_COUNTER_METRICS: "true"
+    EXPOSE_CGROUP_METRICS: "false"
+    ENABLE_PROCESS_METRICS: "false"
+    CPU_ARCH_OVERRIDE: ""
+    CGROUP_METRICS: '*'
+    # REDFISH_PROBE_INTERVAL_IN_SECONDS: "60"
+    # REDFISH_SKIP_SSL_VERIFY: "true"
   # dashboard setting remark: https://www.eia.gov/tools/faqs/faq.php?id=74&t=11
   global:
     namespace: monitoring
@@ -9,7 +24,7 @@ kepler:
     pullPolicy: Always
     #repository: mtr.devops.telekom.de/caas/kepler
     repository: quay.io/sustainable_computing_io/kepler
-    tag: release-0.7.10
+    tag: release-0.7.12
   resources:
     limits:
       cpu: 800m
