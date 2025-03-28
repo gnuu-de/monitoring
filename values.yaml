@@ -6,8 +6,9 @@ kepler:
   serviceMonitor:
     enabled: false
   image:
-    repository: mtr.devops.telekom.de/caas/kepler
     pullPolicy: Always
+    #repository: mtr.devops.telekom.de/caas/kepler
+    repository: quay.io/sustainable_computing_io/kepler
     tag: release-0.7.10
   resources:
     limits:
