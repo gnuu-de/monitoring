@@ -1,4 +1,5 @@
 secret.yaml
+gnuu.yaml
 ingress.yaml
 charts/prometheus
 charts/grafana
