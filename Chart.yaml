@@ -1,22 +1,22 @@
 apiVersion: v2
 name: gnuu-monitoring
 description: A Helm chart for K3s monitoring with Prometheus and Grafana
-version: "0.0.4"
+version: "0.0.5"
 appVersion: "0.0.2"
 keywords:
   - monitoring
 dependencies:
   - name: prometheus
-    version: "25.6.0"
+    version: "27.7.1"
     repository: "https://prometheus-community.github.io/helm-charts"
   - name: loki-stack
-    version: "2.9.11"
+    version: "2.10.2"
     repository: "https://grafana.github.io/helm-charts"
   - name: grafana
-    version: "7.0.8"
+    version: "8.11.0"
     repository: "https://grafana.github.io/helm-charts"
   - name: kepler
-    version: "0.5.2"
+    version: "0.5.13"
     repository: "https://sustainable-computing-io.github.io/kepler-helm-chart"
 sources:
   - https://github.com/gnuu-de/monitoring
