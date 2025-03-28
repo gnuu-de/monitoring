@@ -24,7 +24,9 @@ kepler:
     pullPolicy: Always
     #repository: mtr.devops.telekom.de/caas/kepler
     repository: quay.io/sustainable_computing_io/kepler
-    tag: release-0.7.12
+    # last running version with acpi service
+    # /sys/devices/system/cpu/cpu0/online
+    tag: release-0.7.8
   resources:
     limits:
       cpu: 800m
