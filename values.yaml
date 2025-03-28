@@ -65,9 +65,9 @@ grafana:
           path: /var/lib/grafana/dashboards/default
   dashboardsConfigMaps:
     default: monitoring-dashboards
-  image:
-    registry: mtr.devops.telekom.de
-    repository: kubeprometheusstack/grafana
+  #image:
+  #  registry: mtr.devops.telekom.de
+  #  repository: kubeprometheusstack/grafana
   ingress:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt
