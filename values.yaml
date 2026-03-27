@@ -116,13 +116,6 @@ grafana:
 prometheus:
   alertmanager:
     enabled: false
-  configmapReload:
-    prometheus:
-      image:
-        repository: mtr.devops.telekom.de/kubeprometheusstack/prometheus-config-reloader
-        tag: v0.67.0
-  image:
-    repository: mtr.devops.telekom.de/kubeprometheusstack/prometheus
   kube-state-metrics:
     enabled: true
   prometheus-node-exporter:
